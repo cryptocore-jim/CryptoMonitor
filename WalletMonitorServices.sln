@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2024
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletMonitorServices", "WalletMonitorServices\WalletMonitorServices.csproj", "{A8622B44-3806-4CBC-86D8-B8B3FC7234DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletMonitorApp", "WalletMonitorApp\WalletMonitorApp.csproj", "{D5901120-E0F1-4B1F-AB74-BAB0B29097BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8622B44-3806-4CBC-86D8-B8B3FC7234DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8622B44-3806-4CBC-86D8-B8B3FC7234DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8622B44-3806-4CBC-86D8-B8B3FC7234DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8622B44-3806-4CBC-86D8-B8B3FC7234DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5901120-E0F1-4B1F-AB74-BAB0B29097BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5901120-E0F1-4B1F-AB74-BAB0B29097BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5901120-E0F1-4B1F-AB74-BAB0B29097BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5901120-E0F1-4B1F-AB74-BAB0B29097BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2FE9423D-99D8-49CA-8590-8C5AFA90DAA2}
+	EndGlobalSection
+EndGlobal

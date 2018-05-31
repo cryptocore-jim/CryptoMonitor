@@ -1,0 +1,16 @@
+﻿<Controls:MetroWindow x:Class="WalletMonitorApp.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"                      
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"  
+        xmlns:model="clr-namespace:WalletMonitorApp.ViewModels"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"                      
+	    xmlns:cal="http://www.caliburnproject.org"     
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"      
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
+        xmlns:p="clr-namespace:WalletMonitorApp.Properties"       
+        mc:Ignorable="d" 
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        Title="{Binding WindowTitle}" Height="700" Width="1300">
+    <Grid>
+        <ContentControl Grid.Row="1" cal:View.Context="{Binding CurrentMainView}" cal:View.Model="{Binding}" />                
+    </Grid>
+</Controls:MetroWindow>

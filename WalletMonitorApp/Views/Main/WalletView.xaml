@@ -1,0 +1,354 @@
+﻿<UserControl x:Class="WalletMonitorApp.Views.Main.WalletView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"       
+             xmlns:p="clr-namespace:WalletMonitorApp.Properties"   
+             mc:Ignorable="d" 
+	         xmlns:cal="http://www.caliburnproject.org"  
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"      
+             xmlns:localhelpers="clr-namespace:WalletMonitorApp.Helpers"          
+             d:DesignHeight="650" d:DesignWidth="1200">
+    <UserControl.Resources>
+        <localhelpers:GTEConverter x:Key="GTEConverter"/>
+        <localhelpers:PositiveNegativeConvertor x:Key="PositiveNegativeConvertor"/>
+        <localhelpers:BTC8Converter x:Key="BTC8Converter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Row="0">
+            <StackPanel Width="800"  Height="40" HorizontalAlignment="Left">
+                <Menu Width="800" Height="40" DockPanel.Dock="Top" HorizontalAlignment="Left" FontSize="22">
+                    <MenuItem Header="{x:Static p:Resources.Actions}">
+                        <MenuItem Header="{x:Static p:Resources.LoginDiffSeed}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="DiffSeedLogin">
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </MenuItem>
+                        <MenuItem Header="{x:Static p:Resources.Exit}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="AppExit">
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </MenuItem>
+                    </MenuItem>
+                </Menu>
+            </StackPanel>
+        </DockPanel>
+        <DockPanel Grid.Row="1">
+            <Button Content="{x:Static p:Resources.AddNewAddress}" Style="{StaticResource BigButton}" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <cal:ActionMessage MethodName="AddNewAddress">
+                        </cal:ActionMessage>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <Button Content="Remove address" Style="{StaticResource BigButton}" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <cal:ActionMessage MethodName="RemoveAddress">
+                        </cal:ActionMessage>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <Button Content="Donate!" Style="{StaticResource BigButton}" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" DockPanel.Dock="Right">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <cal:ActionMessage MethodName="Donate">
+                        </cal:ActionMessage>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <Button Content="Join discord" Style="{StaticResource BigButton}" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" DockPanel.Dock="Right">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <cal:ActionMessage MethodName="Discord">
+                        </cal:ActionMessage>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <TextBlock Text="{Binding NewVersion}" VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Right" DockPanel.Dock="Right" />
+        </DockPanel>
+        <Grid Grid.Row="2">
+            <ListView Name="lstWallets" ItemsSource="{Binding WalletList}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="{Binding ActiveSelectedTitle}" x:Name="ListViewCheckbox" Width="{Binding ElementName=col1, Path=ActualWidth}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox Margin="0" 
+                                          VerticalAlignment="Center"
+                                          Checked="dataDhanged" Unchecked="dataDhanged"
+                                          IsChecked="{Binding Selected}" Style="{StaticResource GrayCheckbox}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="{Binding ElementName=col2, Path=ActualWidth}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="Address" Click="columnSort">Address</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" x:Name="Address" Text="{Binding Address}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="{Binding ElementName=col3, Path=ActualWidth}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="CoinName" Click="columnSort">Coin name</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" x:Name="CoinName" Text="{Binding CoinNamePreview}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="{Binding ElementName=col4, Path=ActualWidth}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="LastUpdated" Click="columnSort">Updated</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" x:Name="LastUpdated" Text="{Binding LastUpdatedStr}"/>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding LastUpdated}" Value="{x:Null}">
+                                            <Setter TargetName="LastUpdated" Property="Text" Value="N/A" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="{Binding ElementName=col5, Path=ActualWidth}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="MasternodeStatus" Click="columnSort">MN status</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" x:Name="MasternodeStatus" Text="{Binding MasternodeStatus}"/>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding MasternodeStatus}" Value="{x:Null}">
+                                            <Setter TargetName="MasternodeStatus" Property="Text" Value="N/A" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding MasternodeStatus}" Value="">
+                                            <Setter TargetName="MasternodeStatus" Property="Text" Value="N/A" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="{Binding ElementName=col6, Path=ActualWidth}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="Amount" Click="columnSort">Amount</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" x:Name="Amount" Text="{Binding Amount}"/>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Amount}" Value="{x:Null}">
+                                            <Setter TargetName="Amount" Property="Text" Value="N/A" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="{Binding ElementName=col7, Path=ActualWidth}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="PriceBTC" Click="columnSort">Price BTC</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" x:Name="PriceBTC" Text="{Binding PriceBTC, Converter={StaticResource BTC8Converter}}"/>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding PriceBTC}" Value="{x:Null}">
+                                            <Setter TargetName="PriceBTC" Property="Text" Value="N/A" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="{Binding ElementName=col8, Path=ActualWidth}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="Change">Change (BTC 1/7/14 days)</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center" x:Name="Trend1" Text="{Binding Trend1, Converter={StaticResource PositiveNegativeConvertor}}" Width="50"/>
+                                        <TextBlock VerticalAlignment="Center" Text=""/>
+                                        <TextBlock VerticalAlignment="Center" x:Name="Trend7" Text="{Binding Trend7, Converter={StaticResource PositiveNegativeConvertor}}" Width="50"/>
+                                        <TextBlock VerticalAlignment="Center" Text=""/>
+                                        <TextBlock VerticalAlignment="Center" x:Name="Trend14" Text="{Binding Trend14, Converter={StaticResource PositiveNegativeConvertor}}" Width="50"/>
+                                    </StackPanel>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Trend1, Converter={StaticResource GTEConverter}}" Value="-1">
+                                            <Setter TargetName="Trend1" Property="Foreground" Value="Red" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Trend1, Converter={StaticResource GTEConverter}}" Value="0">
+                                            <Setter TargetName="Trend1" Property="Foreground" Value="PowderBlue" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Trend1, Converter={StaticResource GTEConverter}}" Value="1">
+                                            <Setter TargetName="Trend1" Property="Foreground" Value="Green" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Trend7, Converter={StaticResource GTEConverter}}" Value="-1">
+                                            <Setter TargetName="Trend7" Property="Foreground" Value="Red" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Trend7, Converter={StaticResource GTEConverter}}" Value="0">
+                                            <Setter TargetName="Trend7" Property="Foreground" Value="PowderBlue" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Trend7, Converter={StaticResource GTEConverter}}" Value="1">
+                                            <Setter TargetName="Trend7" Property="Foreground" Value="Green" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Trend14, Converter={StaticResource GTEConverter}}" Value="-1">
+                                            <Setter TargetName="Trend14" Property="Foreground" Value="Red" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Trend14, Converter={StaticResource GTEConverter}}" Value="0">
+                                            <Setter TargetName="Trend14" Property="Foreground" Value="PowderBlue" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Trend14, Converter={StaticResource GTEConverter}}" Value="1">
+                                            <Setter TargetName="Trend14" Property="Foreground" Value="Green" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Trend1}" Value="{x:Null}">
+                                            <Setter TargetName="Trend1" Property="Text" Value="N/A" />
+                                            <Setter TargetName="Trend1" Property="Foreground" Value="White" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="{Binding ElementName=col9, Path=ActualWidth}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="AmountBTC" Click="columnSort">Amount BTC</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" x:Name="AmountBTC" Text="{Binding AmountBTC, Converter={StaticResource BTC8Converter}}"/>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Amount}" Value="{x:Null}">
+                                            <Setter TargetName="AmountBTC" Property="Text" Value="N/A" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="{Binding ElementName=col10, Path=ActualWidth}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="AmountUSD" Click="columnSort">Amount USD</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" x:Name="AmountUSD" Text="{Binding AmountUSD}"/>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Amount}" Value="{x:Null}">
+                                            <Setter TargetName="AmountUSD" Property="Text" Value="N/A" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="{Binding ElementName=col11, Path=ActualWidth}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="AmountEUR" Click="columnSort">Amount EUR</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" x:Name="AmountEUR" Text="{Binding AmountEUR}"/>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding AmountEUR}" Value="{x:Null}">
+                                            <Setter TargetName="AmountEUR" Property="Text" Value="N/A" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Explorer" Width="{Binding ElementName=col12, Path=ActualWidth}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" x:Name="ExplorerURL" >
+                                        <Hyperlink NavigateUri="{Binding ExplorerURLString}" RequestNavigate="Hyperlink_RequestNavigate">Click to open</Hyperlink>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Grid Visibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Auto" Width="Auto">
+                <Grid.ColumnDefinitions>
+                    <!--Width is bound to width of the first GridViewColumn -->
+                    <!--Width is set to "Fill"-->
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="270*" />
+                    <ColumnDefinition Width="150*" />
+                    <ColumnDefinition Width="100*" />
+                    <ColumnDefinition Width="100*" />
+                    <ColumnDefinition Width="100*" />
+                    <ColumnDefinition Width="100*" />
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="100*" />
+                    <ColumnDefinition Width="100*" />
+                    <ColumnDefinition Width="100*" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="18"/>
+                    <!--Correction Width-->
+                </Grid.ColumnDefinitions>
+                <!--This is the hidden helper Field which is used to bind to, using the "Fill" column of the helper grid-->
+                <Grid Grid.Column="0" x:Name="col1"/>
+                <Grid Grid.Column="1" x:Name="col2"/>
+                <Grid Grid.Column="2" x:Name="col3"/>
+                <Grid Grid.Column="3" x:Name="col4"/>
+                <Grid Grid.Column="4" x:Name="col5"/>
+                <Grid Grid.Column="5" x:Name="col6"/>
+                <Grid Grid.Column="6" x:Name="col7"/>
+                <Grid Grid.Column="7" x:Name="col8"/>
+                <Grid Grid.Column="8" x:Name="col9"/>
+                <Grid Grid.Column="9" x:Name="col10"/>
+                <Grid Grid.Column="10" x:Name="col11"/>
+                <Grid Grid.Column="11" x:Name="col12"/>
+                <Grid Grid.Column="12" x:Name="col13"/>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="300" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                <TextBox FontSize="30" Text="Total" BorderThickness="0" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <TextBlock FontSize="30">
+                    <Run Text="BTC: "/>
+                    <Run Text="{Binding TotalBTC, Mode=OneWay}" />
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                <TextBlock FontSize="30">
+                    <Run Text="USD: "/>
+                    <Run Text="{Binding TotalUSD, Mode=OneWay}" />
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Column="3" VerticalAlignment="Center">
+                <TextBlock FontSize="30">
+                    <Run Text="EUR: "/>
+                    <Run Text="{Binding TotalEUR, Mode=OneWay}" />
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
