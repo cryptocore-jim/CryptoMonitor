@@ -35,6 +35,7 @@
                       Width="260" Height="48" FontSize="25" VerticalContentAlignment="Center">
 
             </ComboBox>
+            <TextBlock FontSize="14" VerticalAlignment="Center" Margin="20,20,20,19" Width="313" TextWrapping="Wrap" Text="Auto detect function may detect wrong coin name" Height="24"/>
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Button x:Name="AddCoinBtn" Grid.Row="2" Margin="140 0 0 0" Style="{StaticResource BigButton}" IsEnabled="{Binding AddIsEnabled}">
