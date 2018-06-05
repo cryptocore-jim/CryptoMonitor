@@ -11,6 +11,7 @@ namespace WalletMonitorServices
     public delegate void BalanceUpdated(BalanceWalletDTO balance, string address, string seed);
     public class PoolingService
     {
+        private const int UPDATE_INTERVAL = 120000;
         private HttpClient _httpClient;
         private object locker = new object();
         private List<WalletDTO> _wallets = new List<WalletDTO>();
@@ -20,7 +21,7 @@ namespace WalletMonitorServices
             _httpClient = hc;
             Thread thread = new Thread(_worker);
             thread.Start();
-            System.Timers.Timer timer = new System.Timers.Timer(120000);
+            System.Timers.Timer timer = new System.Timers.Timer(UPDATE_INTERVAL);
             timer.Elapsed += (sender, e) =>
             {
                 ForceUpdate();
@@ -60,7 +61,7 @@ namespace WalletMonitorServices
         /// <param name="wallet"></param>
         public void AddAddress(WalletDTO wallet)
         {
-            lock(locker)
+            lock (locker)
             {
                 _wallets.Add(wallet);
             }
@@ -95,19 +96,20 @@ namespace WalletMonitorServices
                 {
                     processWallets = new List<WalletDTO>(_wallets);
                 }
-                foreach(var wallet in processWallets)
+                foreach (var wallet in processWallets)
                 {
                     try
                     {
-                        throw new Exception();
                         var json = _httpClient.GetStringAsync(string.Format("http://monitorapi.ccore.online/api/getbalance?seed={0}&address={1}", wallet.Seed, wallet.Address)).Result;
                         var balance = JsonConvert.DeserializeObject<BalanceWalletDTO>(json);
+                        balance.LastUpdated = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                         BalanceUpdated?.Invoke(balance, wallet.Address, wallet.Seed);
                     }
                     catch
                     {
                         var balance = new BalanceWalletDTO()
                         {
+                            LastUpdated = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                             Error = true
                         };
                         BalanceUpdated?.Invoke(balance, wallet.Address, wallet.Seed);

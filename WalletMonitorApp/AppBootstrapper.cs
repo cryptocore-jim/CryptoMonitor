@@ -54,6 +54,7 @@ namespace WalletMonitorApp
                 Kernel.Bind<MainViewModel>().ToSelf().InSingletonScope();
                 Kernel.Bind<AddAddressViewModel>().ToSelf().InSingletonScope();
                 Kernel.Bind<DonateViewModel>().ToSelf().InSingletonScope();
+                Kernel.Bind<AskNewCoinViewModel>().ToSelf().InSingletonScope();
                 Kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
                 Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
                 _isInitialized = true;

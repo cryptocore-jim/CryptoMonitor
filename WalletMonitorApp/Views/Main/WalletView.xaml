@@ -45,6 +45,32 @@
                             </i:Interaction.Triggers>
                         </MenuItem>
                     </MenuItem>
+                    <MenuItem Header="Help">
+                        <MenuItem Header="Discord">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="Discord">
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </MenuItem>
+                        <MenuItem Header="Donate">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="Donate">
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </MenuItem>
+                        <MenuItem Header="Add monitor to your coin">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="AddNewCoin">
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </MenuItem>
+                    </MenuItem>
                 </Menu>
             </StackPanel>
         </DockPanel>
@@ -73,10 +99,10 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
-            <Button Content="Join discord" Style="{StaticResource BigButton}" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" DockPanel.Dock="Right">
+            <Button Content="Add this monitor&#xa;to your coin" FontSize="12" Style="{StaticResource BigButton}" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" DockPanel.Dock="Right">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
-                        <cal:ActionMessage MethodName="Discord">
+                        <cal:ActionMessage MethodName="AddNewCoin">
                         </cal:ActionMessage>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>

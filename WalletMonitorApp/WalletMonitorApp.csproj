@@ -96,11 +96,15 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="ViewModels\AskNewCoinViewModel.cs" />
     <Compile Include="ViewModels\DonateViewModel.cs" />
     <Compile Include="ViewModels\AddAddressViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel_version.cs" />
     <Compile Include="ViewModels\MainViewModel_login.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\AskNewCoinView.xaml.cs">
+      <DependentUpon>AskNewCoinView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DonateView.xaml.cs">
       <DependentUpon>DonateView.xaml</DependentUpon>
     </Compile>
@@ -123,6 +127,10 @@
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Log\Logger.cs" />
     <Page Include="Style\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AskNewCoinView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -31,15 +31,15 @@ namespace WalletMonitorApp.ViewModels
                 if (result.Exception == null)
                 {
                     Application.Current.Dispatcher.Invoke(() =>
-                {
-                    foreach (var ticker in result.Result)
                     {
-                        lock (locker)
+                        foreach (var ticker in result.Result)
                         {
-                            _addresses.Add(ticker);
+                            lock (locker)
+                            {
+                                _addresses.Add(ticker);
+                            }
                         }
-                    }
-                });
+                    });
                 }
             }));
         }
@@ -51,7 +51,7 @@ namespace WalletMonitorApp.ViewModels
                 var sb = new StringBuilder();
                 lock (locker)
                 {
-                    foreach(var addr in _addresses)
+                    foreach (var addr in _addresses)
                     {
                         sb.Append(addr.CoinSymbol);
                         sb.Append(": ");

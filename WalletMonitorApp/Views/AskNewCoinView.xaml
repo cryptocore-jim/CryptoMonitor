@@ -1,0 +1,24 @@
+﻿<Controls:MetroWindow x:Class="WalletMonitorApp.Views.AskNewCoinView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"  
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WalletMonitorApp.Views"
+        xmlns:model="clr-namespace:WalletMonitorApp.ViewModels"
+        xmlns:p="clr-namespace:WalletMonitorApp.Properties"   
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"  
+        xmlns:cal="http://www.caliburnproject.org"  
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen"                    
+        mc:Ignorable="d"
+        x:Name="DonateViewModel"
+        d:DataContext="{x:Type model:AddAddressViewModel}"
+        Title="Add new coin" Height="200" Width="400">
+    <StackPanel Margin="20">
+        <TextBox BorderThickness="0" IsReadOnly="True" Width="350" FontSize="18" TextWrapping="Wrap" 
+                 Text="Want this monitor for your coin? contact discord jimwal#0395" />
+
+        <Button Content="Join discord" Style="{StaticResource BigButton}" Margin="10,15,10,0" VerticalAlignment="Top" HorizontalAlignment="Center" Click="Button_Click"></Button>
+    </StackPanel>
+</Controls:MetroWindow>

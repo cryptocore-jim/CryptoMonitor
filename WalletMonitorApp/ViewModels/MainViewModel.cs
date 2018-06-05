@@ -26,12 +26,15 @@ namespace WalletMonitorApp.ViewModels
         private PoolingService _poolingService;
         private AddAddressViewModel _addAddressViewModel;
         private DonateViewModel _donateViewModel;
+        private AskNewCoinViewModel _askNewCoinViewModel;
         private bool firstLogin = false;
-        public MainViewModel(PoolingService ps, LoginService ls, WalletService ws, AddAddressViewModel aavm, DonateViewModel dvm)
+        public MainViewModel(PoolingService ps, LoginService ls, WalletService ws,
+            AddAddressViewModel aavm, DonateViewModel dvm, AskNewCoinViewModel ancm)
         {
             _poolingService = ps;
             _addAddressViewModel = aavm;
             _donateViewModel = dvm;
+            _askNewCoinViewModel = ancm;
             _loginService = ls;
             _walletService = ws;
             firstLogin = true;
@@ -133,6 +136,13 @@ namespace WalletMonitorApp.ViewModels
         public void Discord()
         {
             Process.Start("https://discord.gg/cQNZNxN");
+        }
+
+        public void AddNewCoin()
+        {
+
+            IWindowManager manager = new WindowManager();
+            manager.ShowDialog(_askNewCoinViewModel, null, null);
         }
 
         public async void RemoveAddress()
