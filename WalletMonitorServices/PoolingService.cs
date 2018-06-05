@@ -99,12 +99,18 @@ namespace WalletMonitorServices
                 {
                     try
                     {
+                        throw new Exception();
                         var json = _httpClient.GetStringAsync(string.Format("http://monitorapi.ccore.online/api/getbalance?seed={0}&address={1}", wallet.Seed, wallet.Address)).Result;
                         var balance = JsonConvert.DeserializeObject<BalanceWalletDTO>(json);
                         BalanceUpdated?.Invoke(balance, wallet.Address, wallet.Seed);
                     }
                     catch
                     {
+                        var balance = new BalanceWalletDTO()
+                        {
+                            Error = true
+                        };
+                        BalanceUpdated?.Invoke(balance, wallet.Address, wallet.Seed);
                         //log exception
                     }
                 }

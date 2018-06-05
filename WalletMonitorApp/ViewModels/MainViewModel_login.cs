@@ -40,7 +40,7 @@ namespace WalletMonitorApp.ViewModels
             {
                 if (result.Exception != null)
                 {
-                    MessageBox.Show(result.Exception.Message);
+                    MessageBox.Show("Could not get seed information.\nApplication will exit");
                     Environment.Exit(0);
                 }
                 if (result.Result.Result == false)
@@ -55,29 +55,37 @@ namespace WalletMonitorApp.ViewModels
                 else
                 {
                     _poolingService.ClearWallets();
-                    var wallets = await _walletService.GetWallets(Settings.Default.Seed);
-                    foreach (var wallet in wallets)
+                    try
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
+                        var wallets = await _walletService.GetWallets(Settings.Default.Seed);
+                        foreach (var wallet in wallets)
                         {
-                            WalletList.Add(new Wallet()
+                            Application.Current.Dispatcher.Invoke(() =>
                             {
-                                Address = wallet.Address,
-                                CoinName = wallet.CoinName,
-                                ExplorerURL = wallet.ExplorerURL,
-                                CoinSymbol = wallet.CoinSymbol
+                                WalletList.Add(new Wallet()
+                                {
+                                    Address = wallet.Address,
+                                    CoinName = wallet.CoinName,
+                                    ExplorerURL = wallet.ExplorerURL,
+                                    CoinSymbol = wallet.CoinSymbol
+                                });
                             });
-                        });
-                        _poolingService.AddAddress(new WalletDTO()
-                        {
-                            Seed = Settings.Default.Seed,
-                            Address = wallet.Address
-                        });
+                            _poolingService.AddAddress(new WalletDTO()
+                            {
+                                Seed = Settings.Default.Seed,
+                                Address = wallet.Address
+                            });
+                        }
+                        _poolingService.BalanceUpdated += _balanceUpdated;
+                        _poolingService.ForceUpdate();
+                        CurrentMainView = "WalletView";
+                        firstLogin = false;
                     }
-                    _poolingService.BalanceUpdated += _balanceUpdated;
-                    _poolingService.ForceUpdate();
-                    CurrentMainView = "WalletView";
-                    firstLogin = false;
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message + "\nApplication will exit");
+                        Environment.Exit(0);
+                    }
                 }
 
             });

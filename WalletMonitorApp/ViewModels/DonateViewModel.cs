@@ -25,14 +25,12 @@ namespace WalletMonitorApp.ViewModels
         public DonateViewModel(WalletService ws)
         {
             _walletService = ws;
+
             Task.Run(() => _walletService.GetDonationAddresses().ContinueWith((result) =>
             {
-                if (result.Exception != null)
+                if (result.Exception == null)
                 {
-                    MessageBox.Show(result.Exception.Message);
-                    Environment.Exit(0);
-                }
-                Application.Current.Dispatcher.Invoke(() =>
+                    Application.Current.Dispatcher.Invoke(() =>
                 {
                     foreach (var ticker in result.Result)
                     {
@@ -42,6 +40,7 @@ namespace WalletMonitorApp.ViewModels
                         }
                     }
                 });
+                }
             }));
         }
 

@@ -16,5 +16,6 @@ namespace WalletMonitorServices.DTO
         public decimal Trend7 { get; set; }
         public decimal Trend14 { get; set; }
         public bool Degraded { get; set; }
+        public bool Error { get; set; }
     }
 }

@@ -34,9 +34,9 @@ namespace WalletMonitorApp.ViewModels
             _donateViewModel = dvm;
             _loginService = ls;
             _walletService = ws;
-            GetVersion();
             firstLogin = true;
-            LoginSeed();
+            GetVersion(() => { LoginSeed(); });
+            
         }
 
         private String _newVersion = "";
@@ -190,6 +190,7 @@ namespace WalletMonitorApp.ViewModels
                 vlt.MasternodeStatus = balance.MasternodeStatus;
                 vlt.LastUpdated = balance.LastUpdated;
                 vlt.Degraded = balance.Degraded;
+                vlt.Error = balance.Error;
                 vlt.PriceBTC = balance.PriceBTC;
                 vlt.Trend1 = balance.Trend1;
                 vlt.Trend7 = balance.Trend7;

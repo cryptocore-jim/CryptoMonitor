@@ -90,6 +90,10 @@ namespace WalletMonitorApp.Models
                 {
                     sb.Append(" (Degraded)");
                 }
+                else if (Error)
+                {
+                    sb.Append(" (Error)");
+                }
                 return sb.ToString();
             }
         }
@@ -257,6 +261,21 @@ namespace WalletMonitorApp.Models
             {
                 _degraded = value;
                 NotifyOfPropertyChange(() => Degraded);
+                NotifyOfPropertyChange(() => CoinNamePreview);
+            }
+        }
+
+        private bool _error;
+        public bool Error
+        {
+            get
+            {
+                return _error;
+            }
+            set
+            {
+                _error = value;
+                NotifyOfPropertyChange(() => Error);
                 NotifyOfPropertyChange(() => CoinNamePreview);
             }
         }

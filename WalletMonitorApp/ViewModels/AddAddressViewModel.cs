@@ -25,28 +25,27 @@ namespace WalletMonitorApp.ViewModels
         {
             _poolingService = ps;
             _walletService = ws;
+
             Task.Run(() => _walletService.GetAvailabeTickers().ContinueWith((result) =>
             {
-                if (result.Exception != null)
+                if (result.Exception == null)
                 {
-                    MessageBox.Show(result.Exception.Message);
-                    Environment.Exit(0);
-                }
-                var tickerSelected = new TickerDTO()
-                {
-                    CoinSymbol = "Auto Detect",
-                    Degraded = false
-                };
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    TickerList.Add(tickerSelected);
-                    foreach (var ticker in result.Result.OrderBy(o => o.CoinSymbol).ToList())
+                    var tickerSelected = new TickerDTO()
                     {
-                        TickerList.Add(ticker);
-                    }
-                    NotifyOfPropertyChange(() => TickerList);
-                    SelectedTicker = tickerSelected;
-                });
+                        CoinSymbol = "Auto Detect",
+                        Degraded = false
+                    };
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        TickerList.Add(tickerSelected);
+                        foreach (var ticker in result.Result.OrderBy(o => o.CoinSymbol).ToList())
+                        {
+                            TickerList.Add(ticker);
+                        }
+                        NotifyOfPropertyChange(() => TickerList);
+                        SelectedTicker = tickerSelected;
+                    });
+                }
             }));
         }
 

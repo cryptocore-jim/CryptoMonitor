@@ -29,14 +29,14 @@ namespace WalletMonitorApp.ViewModels
             }
         }
         
-        public void GetVersion()
+        public void GetVersion(System.Action action)
         {
             Task.Run(() => _loginService.GetVersion().ContinueWith((result) =>
             {
 
                 if (result.Exception != null)
                 {
-                    MessageBox.Show(result.Exception.Message);
+                    MessageBox.Show("Could not get version information.\nApplication will exit");
                     Environment.Exit(0);
                 }
                 if (result.Result.Version != "0")
@@ -46,6 +46,7 @@ namespace WalletMonitorApp.ViewModels
                         NewVersion = "New version available: " + result.Result.Version.ToString();
                     }
                     NotifyOfPropertyChange(() => WindowTitle);
+                    action();
                 }
             }));
         }

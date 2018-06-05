@@ -22,9 +22,17 @@ namespace WalletMonitorServices
         /// <returns></returns>
         public async Task<List<WalletDTO>> GetWallets(string seed)
         {
-            var json = await _httpClient.GetStringAsync(string.Format("http://monitorapi.ccore.online/api/getaddresses?seed={0}", seed));
-            var wallets = JsonConvert.DeserializeObject<List<WalletDTO>>(json);
-            return wallets;
+            HttpResponseMessage response = await _httpClient.GetAsync(string.Format("http://monitorapi.ccore.online/api/getaddresses?seed={0}", seed));
+            try
+            {
+                response.EnsureSuccessStatusCode();
+                var wallets = JsonConvert.DeserializeObject<List<WalletDTO>>(await response.Content.ReadAsStringAsync());
+                return wallets;
+            }
+            catch (HttpRequestException e)
+            {
+                throw e;
+            }
 
         }
 
